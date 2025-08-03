@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Search Cases - Court Data Fetcher{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="fas fa-balance-scale me-3"></i>Court Data Fetcher
+            </h1>
+            <p class="lead text-muted">
+                Search for case information from Delhi High Court
+            </p>
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Target Court:</strong> Delhi High Court (https://delhihighcourt.nic.in/)
+            </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-search me-2"></i>Search Case Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form id="searchForm" method="POST" action="{{ url_for('fetch_case') }}">
+                    <div class="row">
+                        <!-- Case Type -->
+                        <div class="col-md-4 mb-3">
+                            <label for="case_type" class="form-label">
+                                <i class="fas fa-gavel me-1"></i>Case Type *
+                            </label>
+                            <select class="form-select" id="case_type" name="case_type" required>
+                                <option value="">Select Case Type</option>
+                                {% for case_type in case_types %}
+                                <option value="{{ case_type }}">{{ case_type }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a case type.
+                            </div>
+                        </div>
+
+                        <!-- Case Number -->
+                        <div class="col-md-4 mb-3">
+                            <label for="case_number" class="form-label">
+                                <i class="fas fa-hashtag me-1"></i>Case Number *
+                            </label>
+                            <input type="text" class="form-control" id="case_number" name="case_number" 
+                                   placeholder="e.g., 123/2023" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid case number.
+                            </div>
+                        </div>
+
+                        <!-- Filing Year -->
+                        <div class="col-md-4 mb-3">
+                            <label for="filing_year" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Filing Year *
+                            </label>
+                            <select class="form-select" id="filing_year" name="filing_year" required>
+                                <option value="">Select Year</option>
+                                {% for year in year_range %}
+                                <option value="{{ year }}">{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a filing year.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            <i class="fas fa-search me-2"></i>Fetch Case Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-question-circle me-2"></i>How to Use
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-list-ol me-2"></i>Steps:</h6>
+                        <ol class="mb-0">
+                            <li>Select the case type from the dropdown</li>
+                            <li>Enter the case number</li>
+                            <li>Choose the filing year</li>
+                            <li>Click "Fetch Case Data"</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Tips:</h6>
+                        <ul class="mb-0">
+                            <li>Case numbers are usually in format: Number/Year</li>
+                            <li>Ensure the filing year is correct</li>
+                            <li>Check the search history for previous queries</li>
+                            <li>PDF downloads are available for orders/judgments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Searches -->
+        {% if recent_searches %}
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Recent Searches
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Case Type</th>
+                                <th>Case Number</th>
+                                <th>Year</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for search in recent_searches %}
+                            <tr>
+                                <td>{{ search.case_type }}</td>
+                                <td>{{ search.case_number }}</td>
+                                <td>{{ search.filing_year }}</td>
+                                <td>
+                                    {% if search.status == 'success' %}
+                                    <span class="badge bg-success">Success</span>
+                                    {% elif search.status == 'error' %}
+                                    <span class="badge bg-danger">Error</span>
+                                    {% else %}
+                                    <span class="badge bg-warning">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ search.query_timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <a href="{{ url_for('search_history') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-history me-1"></i>View Full History
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('searchForm');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    
+    form.addEventListener('submit', function(e) {
+        // Show loading spinner
+        loadingSpinner.classList.remove('d-none');
+        
+        // Validate form
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            loadingSpinner.classList.add('d-none');
+        }
+        
+        form.classList.add('was-validated');
+    });
+    
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 5000);
+});
+</script>
+{% endblock %} 

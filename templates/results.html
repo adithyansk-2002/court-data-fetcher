@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Case Results - Court Data Fetcher{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Search
+            </a>
+        </div>
+
+        <!-- Case Information -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-check-circle me-2"></i>Case Information Retrieved
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Basic Info -->
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Case ID:</strong></td>
+                                <td>{{ case_data.case_id }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Case Type:</strong></td>
+                                <td>{{ case_data.case_type }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Case Number:</strong></td>
+                                <td>{{ case_data.case_number }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Filing Year:</strong></td>
+                                <td>{{ case_data.filing_year }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Court:</strong></td>
+                                <td>{{ case_data.court }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status:</strong></td>
+                                <td><span class="badge bg-warning">{{ case_data.case_status|decode_html }}</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Dates and Judge -->
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-calendar me-2"></i>Important Dates</h5>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Filing Date:</strong></td>
+                                <td>{{ case_data.filing_date|decode_html }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Next Hearing:</strong></td>
+                                <td>{{ case_data.next_hearing_date|decode_html }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bench:</strong></td>
+                                <td>{{ case_data.bench|decode_html }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Judge:</strong></td>
+                                <td>{{ case_data.judge|decode_html }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Updated:</strong></td>
+                                <td>{{ case_data.last_updated[:10] }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parties Information -->
+        <div class="row mb-4">
+            <!-- Petitioners -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Petitioners
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if case_data.petitioners %}
+                        <ul class="list-group list-group-flush">
+                            {% for petitioner in case_data.petitioners %}
+                            <li class="list-group-item">
+                                <i class="fas fa-user-circle me-2 text-primary"></i>{{ petitioner|decode_html }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-muted">No petitioner information available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Respondents -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users me-2"></i>Respondents
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if case_data.respondents %}
+                        <ul class="list-group list-group-flush">
+                            {% for respondent in case_data.respondents %}
+                            <li class="list-group-item">
+                                <i class="fas fa-user-circle me-2 text-secondary"></i>{{ respondent|decode_html }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-muted">No respondent information available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders and Judgments -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-file-pdf me-2"></i>Orders & Judgments
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if case_data.orders %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in case_data.orders %}
+                            <tr>
+                                <td>
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i>
+                                    {{ order.title|decode_html }}
+                                </td>
+                                <td>
+                                    {% if order.type == 'Judgment' %}
+                                    <span class="badge bg-success">{{ order.type|decode_html }}</span>
+                                    {% else %}
+                                    <span class="badge bg-info">{{ order.type|decode_html }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.date|decode_html }}</td>
+                                <td>{{ order.description|decode_html }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        {% if order.pdf_url and order.pdf_url != '' %}
+                                        <a href="{{ order.pdf_url }}" target="_blank" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-external-link-alt me-1"></i>View
+                                        </a>
+                                        <a href="{{ url_for('download_pdf', url=order.pdf_url|urlencode) }}" 
+                                           class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-download me-1"></i>Download
+                                        </a>
+                                        {% else %}
+                                        <button class="btn btn-outline-secondary btn-sm" disabled>
+                                            <i class="fas fa-external-link-alt me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm" disabled>
+                                            <i class="fas fa-download me-1"></i>Download
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-file-pdf fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No orders or judgments available for this case.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Search Information -->
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-search me-2"></i>Search Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Search Query:</strong> {{ query.case_type }} / {{ query.case_number }} / {{ query.filing_year }}</p>
+                        <p><strong>Search Date:</strong> {{ query.query_timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Status:</strong> 
+                            {% if query.status == 'success' %}
+                            <span class="badge bg-success">Success</span>
+                            {% else %}
+                            <span class="badge bg-danger">Error</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Query ID:</strong> {{ query.id }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hide loading spinner
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    if (loadingSpinner) {
+        loadingSpinner.classList.add('d-none');
+    }
+    
+    // Add click handlers for download buttons
+    document.querySelectorAll('.btn-outline-success').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Downloading...';
+            this.disabled = true;
+            
+            // Re-enable after 3 seconds
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }, 3000);
+        });
+    });
+});
+</script>
+{% endblock %} 

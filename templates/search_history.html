@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %}Search History - Court Data Fetcher{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Search History
+                </h2>
+                <p class="text-muted mb-0">View all your previous case searches</p>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-search me-2"></i>New Search
+            </a>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="text-primary">{{ queries.total }}</h4>
+                        <p class="mb-0 text-muted">Total Searches</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="text-success">{{ queries.items|selectattr('status', 'equalto', 'success')|list|length }}</h4>
+                        <p class="mb-0 text-muted">Successful</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="text-danger">{{ queries.items|selectattr('status', 'equalto', 'error')|list|length }}</h4>
+                        <p class="mb-0 text-muted">Errors</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="text-warning">{{ queries.items|selectattr('status', 'equalto', 'pending')|list|length }}</h4>
+                        <p class="mb-0 text-muted">Pending</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search History Table -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-table me-2"></i>Search Records
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if queries.items %}
+                <div class="table-responsive">
+                    <table class="table table-hover" id="searchHistoryTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Case Type</th>
+                                <th>Case Number</th>
+                                <th>Filing Year</th>
+                                <th>Status</th>
+                                <th>Search Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for query in queries.items %}
+                            <tr>
+                                <td>
+                                    <i class="fas fa-gavel me-2 text-primary"></i>
+                                    {{ query.case_type }}
+                                </td>
+                                <td>
+                                    <code>{{ query.case_number }}</code>
+                                </td>
+                                <td>{{ query.filing_year }}</td>
+                                <td>
+                                    {% if query.status == 'success' %}
+                                    <span class="badge bg-success">
+                                        <i class="fas fa-check me-1"></i>Success
+                                    </span>
+                                    {% elif query.status == 'error' %}
+                                    <span class="badge bg-danger">
+                                        <i class="fas fa-times me-1"></i>Error
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-warning">
+                                        <i class="fas fa-clock me-1"></i>Pending
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ query.query_timestamp.strftime('%Y-%m-%d %H:%M') }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        {% if query.status == 'success' %}
+                                        <a href="{{ url_for('view_result', query_id=query.id) }}" 
+                                           class="btn btn-outline-primary btn-sm" 
+                                           title="View Results">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% endif %}
+                                        
+                                        <button class="btn btn-outline-secondary btn-sm btn-re-search"
+                                                data-case-type="{{ query.case_type }}"
+                                                data-case-number="{{ query.case_number }}"
+                                                data-filing-year="{{ query.filing_year }}"
+                                                title="Re-search">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        
+                                        {% if query.error_message %}
+                                        <button class="btn btn-outline-info btn-sm" 
+                                                data-bs-toggle="tooltip" 
+                                                title="{{ query.error_message }}">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if queries.pages > 1 %}
+                <nav aria-label="Search history pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if queries.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('search_history', page=queries.prev_num) }}">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </span>
+                        </li>
+                        {% endif %}
+
+                        {% for page_num in queries.iter_pages() %}
+                            {% if page_num %}
+                                {% if page_num != queries.page %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('search_history', page=page_num) }}">
+                                        {{ page_num }}
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                                {% endif %}
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if queries.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('search_history', page=queries.next_num) }}">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+                {% else %}
+                <!-- Empty State -->
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No search history found</h5>
+                    <p class="text-muted">Start searching for cases to see your history here.</p>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Start Searching
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        {% if queries.items %}
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-download me-2"></i>Export Options
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Export Search History</h6>
+                        <p class="text-muted small">Download your search history in various formats</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-outline-success btn-sm me-2" onclick="exportToCSV()">
+                            <i class="fas fa-file-csv me-1"></i>CSV
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm me-2" onclick="exportToJSON()">
+                            <i class="fas fa-file-code me-1"></i>JSON
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="clearHistory()">
+                            <i class="fas fa-trash me-1"></i>Clear All
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Initialize re-search functionality
+    initializeReSearch();
+});
+
+function initializeReSearch() {
+    const reSearchButtons = document.querySelectorAll('.btn-re-search');
+    reSearchButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const caseType = this.getAttribute('data-case-type');
+            const caseNumber = this.getAttribute('data-case-number');
+            const filingYear = this.getAttribute('data-filing-year');
+            
+            // Redirect to search page with pre-filled form
+            const searchUrl = new URL('{{ url_for("index") }}', window.location.origin);
+            searchUrl.searchParams.set('case_type', caseType);
+            searchUrl.searchParams.set('case_number', caseNumber);
+            searchUrl.searchParams.set('filing_year', filingYear);
+            
+            window.location.href = searchUrl.toString();
+        });
+    });
+}
+
+function exportToCSV() {
+    // Implementation for CSV export
+    alert('CSV export functionality would be implemented here');
+}
+
+function exportToJSON() {
+    // Implementation for JSON export
+    alert('JSON export functionality would be implemented here');
+}
+
+function clearHistory() {
+    if (confirm('Are you sure you want to clear all search history? This action cannot be undone.')) {
+        // Implementation for clearing history
+        alert('Clear history functionality would be implemented here');
+    }
+}
+</script>
+{% endblock %} 
