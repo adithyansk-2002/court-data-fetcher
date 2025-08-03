@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<body onLoad="window.parent.frames[1].document.getElementById('load').style.display='none';">
+<style>
+.errText {
+font-size: 16px;
+font-weight:bold; 
+font-family: 'Trebuchet MS';
+}
+.main {
+	font-family: 	Arial, Verdana, sans-serif;
+	color:		#0000FF;
+	font-size:	14px;
+}
+td {font-family: Arial; font-size: 20pt;}
+</style>
+<style>
+.myDiv {
+  /*border: 5px outset red;*/
+  background-color: #fff;
+  width:60%;
+  /*text-align: center;*/
+}
+</style>
+<table bgcolor="#954d51" align="center" width="60%">
+  <tr>
+    <td align="left" valign="top" class="logo">
+    </td>
+    <td align="center" valign="top" style="color:#fff;">
+      <h2 class="three-d-text">Delhi High Court</h2>
+    </td>
+    <td align="right" valign="top" class="icon">
+    </td>
+  </tr>
+</table>
+
+<style>
+  .three-d-text {
+    color: #fff;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5), 
+                 -3px -3px 5px rgba(0, 0, 0, 0.5),
+                 3px -3px 5px rgba(0, 0, 0, 0.5),
+                 -3px 3px 5px rgba(0, 0, 0, 0.5);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 36px; /* Adjust size as needed */
+    text-align: center;
+    text-transform: uppercase; /* Makes the text uppercase */
+    margin-top: 20px; /* Equal margin at the top */
+    margin-bottom: 20px; /* Equal margin at the bottom */
+  }
+</style>
+<style type="text/css">
+
+BODY {
+	MARGIN: 5px; 
+	background-color: 			#f0f0f0; 
+	scrollbar-3dlight-color: 		#000000;
+	scrollbar-base-color: 		#000000; 
+	scrollbar-arrow-color: 		#000000; 
+	scrollbar-track-color: 		#a0b6f0; 
+	scrollbar-darkshadow-color: 		#e7d8c9;
+	scrollbar-face-color: 		#829a0c; 
+	scrollbar-highlight-color: 		#e7d8c9; 
+} 
+TABLE, TR, TD, BR, BLOCKQUOTE, PRE	{
+	font-size: 	6pt; 
+	font-family: 	tahoma, luxi mono, helvetica, courier;
+}
+.txtBH122 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		122px;
+	font-weight:	bold;
+}
+.txtBH55 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		55px;
+	font-weight:	bold;
+}
+.txtB42 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		42px;
+} 
+.txtB55 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:		8pt;
+	height:		18px;
+	width:		55px;
+}
+.txtB65 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		65px;
+}
+.txtB78 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		78px;
+}
+.txtCBO78 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:8pt;
+	height:		72px;
+	width:		78px;
+}
+.txtCBO158 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:8pt;
+	height:		72px;
+	width:		158px;
+}
+.txtB40 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		40px;
+	list-height:	16px;
+}
+.txtB44 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		44px;
+	list-height:	100;
+}
+.txtB48 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		48px;
+	list-height:	18px;
+}
+.txtB28 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-size:		8pt;
+	height:		18px;
+	width:		28px;
+	list-height:	18px;
+}
+.txtB122 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		122px;
+}
+.txtB128 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		128px;
+}
+
+
+.txtB158 {
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		158px;
+}
+.txtB88 {
+	border-right:	#c3bf4a 1px solid;
+	border-top:	#c3bf4a 1px solid;
+	border-left:	#c3bf4a 1px solid;
+	border-bottom:	#c3bf4a 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		88px;
+}
+.txtDis286 {
+	border-right:		1px solid #f0f0f0;
+	border-top:		1px solid #f0f0f0;
+	font-size:			8pt;
+	font-weight:		bold;
+	color: 			#b8860b; 
+	text-align:		left;
+	text-valign:		top;			
+	border-left:		1px solid #f0f0f0;
+	width:			286px;
+	border-bottom:		1px solid #f0f0f0;
+	font-family:		tahoma;
+	background-color:		#f0f0f0;
+	height:			18px;
+}
+.txtNam225 { 
+	border-right:	#829a0c 1px solid;
+	border-top:	#829a0c 1px solid;
+	border-left:	#829a0c 1px solid;
+	border-bottom:	#829a0c 1px solid;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	font-size:	8pt;
+	height:		18px;
+	width:		225px;
+}
+.fontlb { 
+	font-weight: 	bold; 
+	font-size: 	10pt; 
+	color: 		#000000; 
+	font-family: 	tahoma, helvetica, luxi mono, courier;
+	text-decoration: 	none; 
+}
+.fontHB { 
+	font-weight: 	bold; 
+	font-size: 	10pt; 
+	color: 		#000000; 
+	font-family: 	tahoma, helvetica, luxi mono, courier;
+	text-decoration: 	none; 
+} 
+.fontB { 
+	font-size: 	8pt; 
+	color: 		#000000; 
+	font-family: 	tahoma, helvetica, luxi mono, courier;
+	text-decoration: 	none; 
+} 
+.fontLWUB { 
+	font-weight: bold; 
+	font-size: 12pt; 
+	color: #000000; 
+	font-family: tahoma, luxi mono, helvetica, courier;
+	text-decoration: underline; 
+} 
+.fontTL0 {
+		
+	font-weight:	bold;
+	font-size:	10pt;
+	color:		#000000;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	text-decoration:	none;
+}
+.fontTL1 {
+		
+	font-weight:	bold;
+	font-size:	12pt;
+	color:		#000000;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	text-decoration:	none;
+}
+.fontTL2 {
+		
+	font-weight:	bold;
+	font-size:	14pt;
+	color:		#b8860b;
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	text-decoration:	none;
+}
+.fontN {
+	font-size: 	8pt;
+	color: 		#000000; 
+	font-family:	tahoma, helvetica, luxi mono, courier;
+	text-decoration: 	none; 
+} 
+
+.fontHU { 
+	font-weight: 	bold; 
+	font-size: 	10pt; 
+	color: 		#000000; 
+	font-family: 	tahoma, helvetica, luxi mono, courier;
+	text-decoration: 	underline; 
+}
+.fontHR { 
+	font-weight: 	bold; 
+	font-size: 	8pt; 
+	color: 		#000000; 
+	font-family: 	tahoma, luxi mono, helvetica, courier;
+	text-decoration: 	none; 
+}
+.fontNG { 
+	font-weight: 	bold; 
+	font-size: 	8pt; 
+	color: 		#b8860b; 
+	font-family: 	tahoma, luxi mono, helvetica, courier;
+	text-decoration: 	none; 
+} 
+.fontErr {
+		
+	font-weight:	bold;
+	font-size:	10pt;
+	color:		#000000;
+	font-family: 	tahoma, luxi mono, helvetica, courier;
+
+	text-decoration:	none;
+}
+.Button3 {
+	font-weight:	bold;
+	font-family: 	tahoma, luxi mono, helvetica, courier;
+	font-size:		8pt;
+	position:		relative;
+	height:		16px;
+	width:		58px;
+	color:		#000000;
+	background:	#b3c2ff solid;
+	border-bottom:	1px solid #666600;
+	border-right:	1px solid #666600;
+	border-left:	1px solid #999966;
+	border-top:	1px solid #999966;
+	text-decoration:	none;
+	cursor:		hand;
+}
+.amover {
+	font-weight:	bold;
+	font-size:	8pt;
+	color:		#c3bf4a;
+	font-family:	tahoma;
+	text-decoration:none;
+}
+.amout	{
+	font-weight:	bold;
+	font-size:	8pt;
+	color:		#000000;
+	font-family:	tahoma;
+	text-decoration:none;
+}
+
+a.tree:visited {
+	text-decoration:underline;
+	font-size:	10pt;
+	color:		#0000ff;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.tree:link {	
+	text-decoration:underline;
+	font-size:	10pt;
+	color:		#0000ff; 
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.tree:hover {
+	text-decoration:underline;
+	font-size:		10pt;
+	color:		#f7ae16;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.tree:active {
+	text-decoration:underline;
+	font-size:		10pt;
+	color:		#0000ff;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+
+
+a.treeN:visited {
+	text-decoration:underline;
+	font-size:	10pt;
+	color:		#0000ff;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.treeN:link {	
+	text-decoration:underline;
+	font-size:	10pt;
+	color:		#0000ff; 
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.treeN:hover {
+	text-decoration:underline;
+	font-size:		10pt;
+	color:		#f7ae16;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+a.treeN:active {
+	text-decoration:underline;
+	font-size:		10pt;
+	color:		#0000ff;
+	font-family:	tahoma, luxi mono, helvetica, courier;
+	font-weight: 	bold;
+}
+
+div	{
+	
+	font-family: 		tahoma, luxi mono, helvetica, courier;
+	background-position: 	none
+}	
+#navcontainer ul {
+	float:		left;
+  	
+  	margin:		0;
+  	padding:		0;
+	font-weight: 	bold;
+  	font-size:		12px;
+  	color:		#0000ff;
+  	background:	#ccc;
+}
+#navcontainer ul li {
+  	display:		inline;
+}
+#navcontainer ul li a {
+  	float:		left;
+  	padding:		5px 10px;
+  	background:	#ccc;
+  	color:		#0000ff;
+  	text-decoration:	none;
+  	border-right:	1px solid #fff;
+}
+#navcontainer ul li a:hover {
+  	color:		#0000ff;
+  	background:	#69c;
+}
+
+</style>
+
+<center><table   width='60%' heigth='10px' cellpadding='0' align='center' cellspacing='0' border='0' bgcolor='#fff'><tr width='60%'><td width='60%' align='right'>&nbsp;</td></tr></table>  <table   width='60%' height='10'  cellpadding='0' align='center' cellspacing='0' border='0' bgcolor='#fff'><TR><td  align ='center'><input type='button' name='back' value='Back' class='Button3' onClick="window.open('guiCaseWise.php');" target='_self'><input type='button' name='print' value='Print' class='Button3' onClick="window.print();"></td></TR><TR><td  align ='center'><b><U><font size='4'>HIGH COURT OF DELHI</td></TR></TABLE><form name='ListFiling' action='http://lobis.nic.in/casetype1.php?scode=31&fflag=1' method='post' name='form3' class='style3' id='form3' target='_blank'>    <table   cellpadding='0' cellspacing='0' border='0' width='60%' bgcolor='#fff'><tr><td width='100px' align='right'><font size='2'><b>Case No :&nbsp;</b></td><td width='200px' align='left'><font size='2'>WP(C)-2832/2025</td><td width='100px' align='left'><font size='2'>&nbsp;</td><td width='200px' align='right'><font size='2'><b>Date of Filing : &nbsp;</b></td><td width='100px' align='left'><font size='2'> </td><tr><tr><td width='100px' align='right'><font size='2'><b>CNR No. :&nbsp;</b></td><td width='200px' align='left'><font size='2'></td><td width='100px' align='left'><font size='2'>&nbsp;</td><td width='200px' align='right'><font size='2'><b>Date of Registration : &nbsp;</b></td><td width='100px' align='left'><font size='2'></td><tr><tr><td width='100px' align='right'><font size='2'><b>Status :&nbsp;</b></td>
+<td width='200px' align='left'><font size='2'></td>
+<td width='100px' align='left'><font size='2'><input name='ctype' type='hidden' value='WP(C)' > <input name='cnum' type='hidden' value='2832' /> <input name='cyear' type='hidden' value='2025'>
+<font size='3'></td><td width='200px' align='right'><font size='2'><b><b></b></font></td><td width='100px' align='left'><font size='2'></td></tr></table>  <table   cellpadding='0' cellspacing='0' border='0' width='60%' bgcolor='#fff'><tr><td align='center'><font size='2'><b> <br>Vs.</b></td></tr><tr><td align='center'><font size='2'><b></b></td></tr></table></form>  <table   cellpadding='0' cellspacing='0' border='0' width='60%' bgcolor='#fff'><tr><td width='200px' align='right' valign='top' ><font size='2'><b>Filing Advocate : &nbsp;</b></td><td align='left' valign='top'><font size='2'><td></tr><tr height='10px'><td></td></tr></table><table bgcolor='#fff' width="60%"><form action="case_history.php" method="post">
+<input name='casetype' type='hidden' value='WP(C)' > <input name='caseno' type='hidden' value='2832' /> <input name='caseyr' type='hidden' value='2025'><input type="hidden" name="acode" id="acode" value=""><input type="hidden" name="6_letters_code" id="6_letters_code" value="">
+<tr bgcolor='#fff'><td align="center"><input type="submit" name="filing" id="filing" value="Filing Details"><input type="submit" name="listing" id="listing" value="Listing Details"></td></tr>
+</form>
+</table>
+<table  bgcolor="#61677a" align="center" width="60%">
+  <tr>
+    <td height="1">&nbsp;</td>
+  </tr>
+  <tr>
+ <td align="center"  height="40" style='color:#fff;'><font size="2">
+ Delhi High Court, Sunday , 03-Aug-2025<br />
+       <a href="#"><font color="#009900"></font></a> &nbsp;&nbsp;</span></td>
+  </tr>
+  </td>
+  </tr>  
+</table>
+</body>
+</html>

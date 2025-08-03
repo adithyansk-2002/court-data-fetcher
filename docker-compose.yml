@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  court-data-fetcher:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=your-production-secret-key-change-this
+      - DATABASE_URL=sqlite:///court_data.db
+      - DEBUG=False
+    volumes:
+      - ./static/downloads:/app/static/downloads
+      - ./court_data.db:/app/court_data.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add a reverse proxy with Nginx
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - court-data-fetcher
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  downloads:
+    driver: local 
